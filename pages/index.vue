@@ -8,7 +8,7 @@ main(
         h1.mb-10(
           style="font-weight: 300; text-align: center"
         ) Uncle Eric Loves You, Jae Moon
-    v-row
+    v-row(align-content="stretch")
       v-col(
         cols="12"
         md="4"
@@ -18,7 +18,8 @@ main(
         )
           v-card-subtitle Original Value
           v-card-text
-            h1.text-h1.text-right $500
+            h1.text-h1.text-right ${{ startingValue }}
+            small {{ numberOfCoins }} ETH
       v-col(
         cols="12"
         md="4"
@@ -47,8 +48,6 @@ main(
         apexchart(
           type="area" height="350" :options="chartOptions" :series="series"
         )
-    v-row
-      v-col
         h2(
           style="text-align: center; font-weight: 300"
         )
@@ -60,9 +59,9 @@ main(
 export default {
   data () {
     return {
-      startingValue: 500,
+      startingValue: 541.93,
       currentPrice: null,
-      numberOfCoins: 200000000,
+      numberOfCoins: 0.14988643,
       series: [
         {
           name: 'Safemoon',
@@ -139,18 +138,18 @@ export default {
   },
   computed: {
     currentValue () {
-      return this.currentPrice * this.numberOfCoins
+      return (this.currentPrice * this.numberOfCoins).toFixed(2)
     },
     profitLossDollars () {
-      return this.currentValue - this.startingValue
+      return (this.currentValue - this.startingValue).toFixed(2)
     },
     profitLossPercentage () {
-      return (this.currentValue - this.startingValue) / this.startingValue * 100
+      return ((this.currentValue - this.startingValue) / this.startingValue * 100).toFixed(2)
     }
   },
   async mounted () {
     try {
-      const response = await this.$axios.$get('https://api.coingecko.com/api/v3/coins/safemoon?localization=false&community_data=false&developer_data=false&sparkline=false')
+      const response = await this.$axios.$get('https://api.coingecko.com/api/v3/coins/ethereum?localization=false&community_data=false&developer_data=false&sparkline=false')
       this.currentPrice = response.market_data.current_price.usd
     } catch (error) {
       console.error(error)
