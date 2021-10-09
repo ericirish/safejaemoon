@@ -6,8 +6,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - safejaemoon',
-    title: 'safejaemoon',
+    titleTemplate: '%s - Safe Jae Moon',
+    title: 'Safe Jae Moon',
     htmlAttrs: {
       lang: 'en'
     },
