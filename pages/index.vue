@@ -38,7 +38,10 @@ main(
         )
           v-card-subtitle Profit/Loss
           v-card-text
-            h1.text-h1.text-right ${{ profitLoss }}
+            h1.text-h1.text-right ${{ profitLossDollars }}
+              | &nbsp;
+              v-icon {{ profitLossPercentage > 0 ? 'mdi-arrow-up' : 'mdi-arrow-down' }}
+              | {{ Math.abs(profitLossPercentage) }}%
     v-row
       v-col
         apexchart(
@@ -59,11 +62,26 @@ export default {
     return {
       startingValue: 500,
       currentPrice: null,
-      numberOfCoins: 100000000,
-      series: [{
-        name: 'XYZ MOTORS'
-        // data: dates
-      }],
+      numberOfCoins: 200000000,
+      series: [
+        {
+          name: 'Safemoon',
+          data: [
+            {
+              x: '10-11-2021',
+              y: 100
+            },
+            {
+              x: '10-12-2021',
+              y: 110
+            },
+            {
+              x: '10-13-2021',
+              y: 90
+            }
+          ]
+        }
+      ],
       chartOptions: {
         chart: {
           type: 'area',
@@ -95,25 +113,25 @@ export default {
           }
         },
         yaxis: {
-          labels: {
-            formatter (val) {
-              return (val / 1000000).toFixed(0)
-            }
-          },
+          // labels: {
+          //   formatter (val) {
+          //     return (val / 1000000).toFixed(0)
+          //   }
+          // },
           title: {
             text: 'Price'
           }
         },
         xaxis: {
-          type: 'datetime'
+          type: 'datetime',
+          min: new Date('10-09-2021').getTime(),
+          max: new Date('10-09-2039').getTime(),
+          labels: {
+            format: 'yyyy'
+          }
         },
         tooltip: {
-          shared: false,
-          y: {
-            formatter (val) {
-              return (val / 1000000).toFixed(0)
-            }
-          }
+          shared: false
         }
       }
 
@@ -123,14 +141,16 @@ export default {
     currentValue () {
       return this.currentPrice * this.numberOfCoins
     },
-    profitLoss () {
+    profitLossDollars () {
       return this.currentValue - this.startingValue
+    },
+    profitLossPercentage () {
+      return (this.currentValue - this.startingValue) / this.startingValue * 100
     }
   },
   async mounted () {
     try {
       const response = await this.$axios.$get('https://api.coingecko.com/api/v3/coins/safemoon?localization=false&community_data=false&developer_data=false&sparkline=false')
-      console.log(response)
       this.currentPrice = response.market_data.current_price.usd
     } catch (error) {
       console.error(error)
