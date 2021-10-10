@@ -66,9 +66,10 @@ main(
 
     v-row
       v-col
-        apexchart(
-          type="area" height="350" :options="chartOptions" :series="series"
-        )
+        client-only
+          apexchart(
+            type="area" height="350" :options="chartOptions" :series="series"
+          )
         h2(
           style="text-align: center; font-weight: 300"
         )
@@ -85,25 +86,6 @@ export default {
       numberOfCoins: 0.14988643,
       historicalPrices: [],
       startDate: null,
-      // series: [
-      //   {
-      //     name: 'Ethereum',
-      //     data: [
-      //       {
-      //         x: '10-11-2021',
-      //         y: 100
-      //       },
-      //       {
-      //         x: '10-12-2021',
-      //         y: 110
-      //       },
-      //       {
-      //         x: '10-13-2021',
-      //         y: 90
-      //       }
-      //     ]
-      //   }
-      // ],
       chartOptions: {
         chart: {
           type: 'area',
